@@ -1,0 +1,47 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Sky -->
+  <rect width="500" height="350" fill="url(#sky)"/>
+  <!-- Ground -->
+  <rect y="350" width="500" height="150" fill="#90EE90"/>
+  <!-- Flowers -->
+  <circle cx="80" cy="320" r="4" fill="#FF69B4"/>
+  <circle cx="70" cy="310" r="3" fill="#FF1493"/>
+  <circle cx="90" cy="310" r="3" fill="#FF1493"/>
+  <circle cx="75" cy="300" r="2" fill="#FFB6C1"/>
+  <circle cx="85" cy="300" r="2" fill="#FFB6C1"/>
+  <!-- Stem -->
+  <line x1="75" y1="300" x2="75" y2="325" stroke="#228B22" stroke-width="2"/>
+  <line x1="85" y1="300" x2="85" y2="325" stroke="#228B22" stroke-width="2"/>
+  <!-- More flowers -->
+  <circle cx="200" cy="300" r="4" fill="#FFD700"/>
+  <circle cx="190" cy="290" r="3" fill="#FFA500"/>
+  <circle cx="210" cy="290" r="3" fill="#FFA500"/>
+  <line x1="200" y1="290" x2="200" y2="320" stroke="#228B22" stroke-width="2"/>
+  <!-- Flowers 3 -->
+  <circle cx="380" cy="310" r="4" fill="#DDA0DD"/>
+  <circle cx="370" cy="300" r="3" fill="#EE82EE"/>
+  <circle cx="390" cy="300" r="3" fill="#EE82EE"/>
+  <line x1="380" y1="300" x2="380" y2="330" stroke="#228B22" stroke-width="2"/>
+  <!-- Tree -->
+  <rect x="420" y="200" width="20" height="150" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+  <!-- Tree foliage -->
+  <circle cx="430" cy="150" r="60" fill="#228B22"/>
+  <circle cx="400" cy="180" r="45" fill="#228B22"/>
+  <circle cx="460" cy="180" r="45" fill="#228B22"/>
+  <!-- Bench -->
+  <rect x="280" y="280" width="100" height="20" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+  <!-- Bench legs -->
+  <rect x="290" y="300" width="12" height="40" fill="#654321"/>
+  <rect x="378" y="300" width="12" height="40" fill="#654321"/>
+  <!-- Water feature/Fountain base -->
+  <circle cx="120" cy="320" r="25" fill="#C0C0C0" stroke="#808080" stroke-width="2"/>
+  <circle cx="120" cy="315" r="20" fill="#87CEEB" stroke="#4A90E2" stroke-width="1"/>
+  <!-- Text -->
+  <text x="250" y="480" font-size="20" font-weight="bold" text-anchor="middle" fill="#3d3d3d">Garden</text>
+</svg>

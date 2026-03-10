@@ -1,0 +1,41 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bedroomWall" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0e6d2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8d4b5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Walls -->
+  <rect width="500" height="500" fill="url(#bedroomWall)"/>
+  <!-- Bed -->
+  <rect x="50" y="150" width="250" height="160" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+  <!-- Mattress -->
+  <rect x="60" y="160" width="230" height="130" fill="#D2B48C" stroke="#A0826D" stroke-width="1"/>
+  <!-- Pillows -->
+  <ellipse cx="100" cy="170" rx="30" ry="25" fill="#F5DEB3"/>
+  <ellipse cx="210" cy="170" rx="30" ry="25" fill="#F5DEB3"/>
+  <!-- Blanket -->
+  <rect x="60" y="230" width="230" height="60" fill="#DC143C" opacity="0.7"/>
+  <!-- Nightstand -->
+  <rect x="330" y="160" width="100" height="80" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+  <!-- Drawer -->
+  <rect x="340" y="170" width="80" height="25" fill="#A0826D" stroke="#654321" stroke-width="1"/>
+  <!-- Lamp on nightstand -->
+  <rect x="360" y="120" width="8" height="40" fill="#8B4513"/>
+  <circle cx="364" cy="115" r="18" fill="#FFD700" stroke="#DAA520" stroke-width="1"/>
+  <!-- Window -->
+  <rect x="330" y="270" width="130" height="120" fill="#87CEEB" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="395" y1="270" x2="395" y2="390" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="330" y1="330" x2="460" y2="330" stroke="#4A90E2" stroke-width="2"/>
+  <!-- Curtains -->
+  <polygon points="330,270 340,285 330,300" fill="#D8BFD8" opacity="0.7"/>
+  <polygon points="460,270 450,285 460,300" fill="#D8BFD8" opacity="0.7"/>
+  <!-- Carpet -->
+  <ellipse cx="180" cy="380" rx="100" ry="60" fill="#DEB887" opacity="0.5"/>
+  <!-- Wardrobe -->
+  <rect x="50" y="330" width="120" height="140" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+  <rect x="65" y="345" width="50" height="110" fill="#A0826D" stroke="#654321" stroke-width="1"/>
+  <rect x="125" y="345" width="50" height="110" fill="#A0826D" stroke="#654321" stroke-width="1"/>
+  <!-- Text -->
+  <text x="250" y="480" font-size="20" font-weight="bold" text-anchor="middle" fill="#3d3d3d">Bedroom</text>
+</svg>

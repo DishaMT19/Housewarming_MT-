@@ -1,0 +1,35 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5dc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ede9d4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Walls -->
+  <rect width="500" height="500" fill="url(#wallGrad)"/>
+  <!-- Sofa -->
+  <rect x="50" y="150" width="200" height="100" rx="10" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+  <!-- Sofa cushions -->
+  <circle cx="80" cy="160" r="15" fill="#A0522D"/>
+  <circle cx="130" cy="160" r="15" fill="#A0522D"/>
+  <circle cx="180" cy="160" r="15" fill="#A0522D"/>
+  <!-- Coffee table -->
+  <rect x="80" y="280" width="140" height="80" fill="#D2B48C" stroke="#8B7355" stroke-width="2"/>
+  <rect x="90" y="290" width="120" height="10" fill="#8B7355" opacity="0.5"/>
+  <!-- Painting -->
+  <rect x="280" y="100" width="150" height="120" fill="#FFE4B5" stroke="#DAA520" stroke-width="3"/>
+  <rect x="285" y="105" width="140" height="110" fill="#FFD700" opacity="0.7"/>
+  <circle cx="355" cy="160" r="40" fill="#FF6347" opacity="0.6"/>
+  <!-- Window -->
+  <rect x="320" y="280" width="120" height="100" fill="#87CEEB" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="380" y1="280" x2="380" y2="380" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="320" y1="330" x2="440" y2="330" stroke="#4A90E2" stroke-width="2"/>
+  <!-- Curtains -->
+  <polygon points="320,280 330,290 320,300" fill="#DC143C" opacity="0.7"/>
+  <polygon points="440,280 430,290 440,300" fill="#DC143C" opacity="0.7"/>
+  <!-- Lamp -->
+  <rect x="270" y="200" width="10" height="80" fill="#8B4513" stroke="#654321" stroke-width="1"/>
+  <ellipse cx="275" cy="195" rx="25" ry="15" fill="#FFD700" stroke="#DAA520" stroke-width="1"/>
+  <!-- Text -->
+  <text x="250" y="480" font-size="20" font-weight="bold" text-anchor="middle" fill="#3d3d3d">Living Room</text>
+</svg>
