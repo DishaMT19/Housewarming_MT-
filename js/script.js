@@ -1,506 +1,497 @@
 /**
- * HOUSEWARMING WEBSITE - EVENT-READY VERSION
- * Simple, reliable, elderly-friendly
- * Smart Travel Assistant with distance/ETA calculation
+ * HOUSEWARMING CEREMONY WEBSITE
+ * Premium Interactive Features
  */
 
 // ==========================================
 // CONFIGURATION
 // ==========================================
-
 const CONFIG = {
-    // House location (easy to change here)
     houseLat: 12.755061,
     houseLng: 75.124859,
-    houseAddress: '123 New Home Street, Beautiful City',
-    eventDate: '2025-03-12',
-    // Average driving speed for ETA calculation (km/h)
-    averageSpeed: 40
+    houseAddress: '123 New Home Street, Beautiful City, 560001',
+    averageSpeed: 40,
+    eventDate: '2025-03-12'
 };
+
+// Gallery Images (High-quality curated)
+const GALLERY_IMAGES = [
+    {
+        url: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800',
+        title: 'Elegant Living Space',
+        alt: 'Modern living room with warm lighting'
+    },
+    {
+        url: 'https://images.pexels.com/photos/290595/pexels-photo-290595.jpeg?auto=compress&cs=tinysrgb&w=800',
+        title: 'Sacred Prayer Corner',
+        alt: 'Traditional pooja room with diyas'
+    },
+    {
+        url: 'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=800',
+        title: 'Modern Kitchen',
+        alt: 'Spacious kitchen with wooden cabinets'
+    },
+    {
+        url: 'https://images.pexels.com/photos/279719/pexels-photo-279719.jpeg?auto=compress&cs=tinysrgb&w=800',
+        title: 'Cozy Bedroom',
+        alt: 'Master bedroom with warm decor'
+    },
+    {
+        url: 'https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=800',
+        title: 'Dining Area',
+        alt: 'Beautiful dining space for gatherings'
+    },
+    {
+        url: 'https://images.pexels.com/photos/1268872/pexels-photo-1268872.jpeg?auto=compress&cs=tinysrgb&w=800',
+        title: 'Outdoor Garden',
+        alt: 'Peaceful garden with seating area'
+    }
+];
+
+// ==========================================
+// PARTICLE SYSTEM
+// ==========================================
+class ParticleSystem {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = [];
+        this.particleCount = 80;
+        this.init();
+        this.animate();
+        this.handleResize();
+    }
+    
+    init() {
+        this.resize();
+        for (let i = 0; i < this.particleCount; i++) {
+            this.particles.push({
+                x: Math.random() * this.width,
+                y: Math.random() * this.height,
+                radius: Math.random() * 3 + 1,
+                alpha: Math.random() * 0.5 + 0.2,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.2,
+                color: `hsl(${Math.random() * 60 + 30}, 80%, 60%)`
+            });
+        }
+    }
+    
+    resize() {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        
+        this.particles.forEach(p => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            
+            if (p.x < 0) p.x = this.width;
+            if (p.x > this.width) p.x = 0;
+            if (p.y < 0) p.y = this.height;
+            if (p.y > this.height) p.y = 0;
+            
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = p.color;
+            this.ctx.shadowBlur = 8;
+            this.ctx.shadowColor = `rgba(255, 200, 100, ${p.alpha * 0.5})`;
+            this.ctx.fill();
+        });
+        
+        requestAnimationFrame(() => this.animate());
+    }
+    
+    handleResize() {
+        window.addEventListener('resize', () => {
+            this.resize();
+            this.particles = [];
+            this.init();
+        });
+    }
+}
 
 // ==========================================
 // UTILITY FUNCTIONS
 // ==========================================
-
-/**
- * Calculate distance between two coordinates using Haversine formula
- * Returns distance in kilometers
- */
 function calculateDistance(lat1, lng1, lat2, lng2) {
-    const R = 6371; // Earth's radius in kilometers
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLng = (lng2 - lng1) * Math.PI / 180;
-    const a = 
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLng / 2) * Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+              Math.sin(dLng/2) * Math.sin(dLng/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return R * c;
 }
 
-/**
- * Calculate ETA based on distance and average speed
- * Returns minutes
- */
-function calculateETA(distanceKm, speedKmh) {
-    return Math.round((distanceKm / speedKmh) * 60);
-}
-
-/**
- * Format distance for display
- */
 function formatDistance(km) {
-    if (km < 1) {
-        return (km * 1000).toFixed(0) + ' meters';
-    }
-    return km.toFixed(1) + ' km';
+    if (km < 1) return `${(km * 1000).toFixed(0)} meters`;
+    return `${km.toFixed(1)} km`;
 }
 
-/**
- * Escape HTML to prevent XSS
- */
+function calculateETA(distance, speed) {
+    return Math.round((distance / speed) * 60);
+}
+
 function escapeHtml(text) {
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    return text.replace(/[&<>"']/g, m => map[m]);
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // ==========================================
-// INITIALIZATION - LOADER FIRST
+// LOADER
 // ==========================================
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Show loader first
-    showLoader();
-});
-
-function showLoader() {
+function initLoader() {
     const loader = document.getElementById('loader');
-    const mainContent = document.getElementById('main-content');
-    
-    // Loader automatically disappears after 2 seconds
-    setTimeout(() => {
-        // Fade out loader
-        loader.style.opacity = '0';
-        loader.style.transition = 'opacity 0.5s ease-out';
-        
+    if (loader) {
         setTimeout(() => {
-            // Hide loader
-            loader.style.display = 'none';
-            
-            // Show main content with fade in
-            mainContent.style.display = 'block';
+            loader.classList.add('hide');
             setTimeout(() => {
-                mainContent.style.opacity = '1';
-                mainContent.style.transition = 'opacity 0.5s ease-in';
-            }, 10);
-            
-            // Initialize app functionality
-            initializeApp();
-        }, 500);
-    }, 2000);
-}
-
-function initializeApp() {
-    setupButtonListeners();
-    setupGalleryFunctionality();
-    setupBlessingsForm();
-    setupScrollAnimations();
-    updateLocationDisplay();
-    
-    console.log('🏠 Housewarming Website Initialized');
-    console.log(`📍 House Location: ${CONFIG.houseLat}, ${CONFIG.houseLng}`);
+                loader.style.display = 'none';
+            }, 600);
+        }, 1800);
+    }
 }
 
 // ==========================================
-// SMART TRAVEL ASSISTANT
+// GALLERY
 // ==========================================
+let currentImageIndex = 0;
 
-/**
- * Smart Travel Assistant - Main function
- * Gets user location, shows distance/ETA, then opens Google Maps
- */
-function openTravelAssistant() {
-    const statusElement = document.getElementById('locationStatus');
-    const distanceETAElement = document.getElementById('distanceETA');
+function initGallery() {
+    const galleryGrid = document.getElementById('galleryGrid');
+    if (!galleryGrid) return;
     
-    // Show loading status
-    if (statusElement) {
-        statusElement.textContent = '🔍 Finding your location…';
-        statusElement.className = 'location-status';
+    galleryGrid.innerHTML = GALLERY_IMAGES.map((img, index) => `
+        <div class="gallery-item" data-index="${index}">
+            <img src="${img.url}" alt="${img.alt}" loading="lazy">
+            <div class="gallery-overlay">
+                <span>${img.title}</span>
+            </div>
+        </div>
+    `).join('');
+    
+    // Animate on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        observer.observe(item);
+        item.addEventListener('click', () => openGalleryModal(parseInt(item.dataset.index)));
+    });
+}
+
+function openGalleryModal(index) {
+    currentImageIndex = index;
+    const modal = document.getElementById('galleryModal');
+    const modalImage = document.getElementById('modalImage');
+    modalImage.src = GALLERY_IMAGES[index].url;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function initGalleryModal() {
+    const modal = document.getElementById('galleryModal');
+    const closeBtn = document.querySelector('.modal-close');
+    const prevBtn = document.querySelector('.modal-prev');
+    const nextBtn = document.querySelector('.modal-next');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
     }
     
-    // Get user's current location
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                // Success: Got user's location
-                const userLat = position.coords.latitude;
-                const userLng = position.coords.longitude;
-                const accuracy = position.coords.accuracy;
-                
-                // Calculate distance and ETA
-                const distance = calculateDistance(userLat, userLng, CONFIG.houseLat, CONFIG.houseLng);
-                const eta = calculateETA(distance, CONFIG.averageSpeed);
-                
-                // Show distance and ETA
-                if (distanceETAElement) {
-                    distanceETAElement.innerHTML = `
-                        <div style="font-size: var(--font-size-large); color: var(--primary-color); margin-bottom: 8px;">
-                            📍 You are approximately <strong>${formatDistance(distance)}</strong> away
-                        </div>
-                        <div style="font-size: var(--font-size-large); color: var(--text-color);">
-                            ⏱️ Estimated travel time: <strong>${eta} minutes</strong>
-                        </div>
-                    `;
-                }
-                
-                // Update status
-                if (statusElement) {
-                    statusElement.textContent = '✓ Location found! Opening Google Maps…';
-                    statusElement.className = 'location-status success';
-                }
-                
-                // Open Google Maps with turn-by-turn navigation
-                // FROM: User's current location
-                // TO: Destination (our house)
-                const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${CONFIG.houseLat},${CONFIG.houseLng}&travelmode=driving`;
-                
-                // Open in new tab after showing distance/ETA
-                setTimeout(() => {
-                    window.open(mapsUrl, '_blank');
-                }, 1500);
-                
-                // Clear status after 4 seconds
-                setTimeout(() => {
-                    if (statusElement) {
-                        statusElement.textContent = '';
-                    }
-                }, 4000);
-            },
-            (error) => {
-                // Error: Couldn't get location
-                let errorMessage = '⚠️ Could not get your location. ';
-                
-                switch(error.code) {
-                    case error.PERMISSION_DENIED:
-                        errorMessage += 'Please allow location access in your browser settings and try again.';
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        errorMessage += 'Location information is unavailable at this moment.';
-                        break;
-                    case error.TIMEOUT:
-                        errorMessage += 'Location request timed out. Please try again.';
-                        break;
-                    default:
-                        errorMessage += 'An unknown error occurred.';
-                }
-                
-                if (statusElement) {
-                    statusElement.textContent = errorMessage;
-                    statusElement.className = 'location-status error';
-                    
-                    // Clear status after 5 seconds
-                    setTimeout(() => {
-                        statusElement.textContent = '';
-                    }, 5000);
-                }
-                
-                // Fallback: Open Google Maps without user's location
-                console.warn('Geolocation error, falling back to Google Maps');
-                const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${CONFIG.houseLat},${CONFIG.houseLng}&travelmode=driving`;
-                window.open(mapsUrl, '_blank');
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 15000, // 15 seconds
-                maximumAge: 0 // Always get fresh location
-            }
-        );
-    } else {
-        // Geolocation not supported
-        if (statusElement) {
-            statusElement.textContent = '⚠️ Geolocation not supported. Opening maps…';
-            statusElement.className = 'location-status error';
-            
-            setTimeout(() => {
-                statusElement.textContent = '';
-            }, 3000);
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+            document.getElementById('modalImage').src = GALLERY_IMAGES[currentImageIndex].url;
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex + 1) % GALLERY_IMAGES.length;
+            document.getElementById('modalImage').src = GALLERY_IMAGES[currentImageIndex].url;
+        });
+    }
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
         }
-        
-        // Fallback: Open Google Maps without location
-        const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${CONFIG.houseLat},${CONFIG.houseLng}&travelmode=driving`;
-        window.open(mapsUrl, '_blank');
-    }
-}
-
-// ==========================================
-// BUTTON EVENT LISTENERS
-// ==========================================
-
-function setupButtonListeners() {
-    // Main navigation button (in welcome section)
-    const guideBtn = document.getElementById('guideBtn');
-    if (guideBtn) {
-        guideBtn.addEventListener('click', openTravelAssistant);
-    }
-
-    // Location section button
-    const routeBtn = document.getElementById('routeBtn');
-    if (routeBtn) {
-        routeBtn.addEventListener('click', openTravelAssistant);
-    }
-
-    // Travel Assistant button (replaced Call Host)
-    const travelAssistantBtn = document.getElementById('travelAssistantBtn');
-    if (travelAssistantBtn) {
-        travelAssistantBtn.addEventListener('click', openTravelAssistant);
-    }
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
     });
-
-    // Button hover animations
-    document.querySelectorAll('.btn').forEach(btn => {
-        btn.addEventListener('mouseenter', function() {
-            if (!this.disabled) {
-                this.style.transform = 'translateY(-3px)';
-            }
-        });
-        
-        btn.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-}
-
-// ==========================================
-// GALLERY FUNCTIONALITY
-// ==========================================
-
-function setupGalleryFunctionality() {
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    const fullscreenGallery = document.getElementById('fullscreenGallery');
-    const fullscreenImage = document.getElementById('fullscreenImage');
-    const closeBtn = document.querySelector('.close-fullscreen');
-    const prevBtn = document.getElementById('prevImage');
-    const nextBtn = document.getElementById('nextImage');
-
-    let currentImageIndex = 0;
-    const images = Array.from(galleryItems).map(item => ({
-        src: item.querySelector('img').src,
-        alt: item.querySelector('img').alt
-    }));
-
-    // Open fullscreen
-    galleryItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            currentImageIndex = index;
-            displayImage(index);
-            fullscreenGallery.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
-    function displayImage(index) {
-        if (images[index]) {
-            fullscreenImage.src = images[index].src;
-            fullscreenImage.alt = images[index].alt;
-        }
-    }
-
-    // Navigation
-    prevBtn.addEventListener('click', () => {
-        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-        displayImage(currentImageIndex);
-    });
-
-    nextBtn.addEventListener('click', () => {
-        currentImageIndex = (currentImageIndex + 1) % images.length;
-        displayImage(currentImageIndex);
-    });
-
-    // Close
-    closeBtn.addEventListener('click', closeFullscreen);
-    fullscreenGallery.addEventListener('click', (e) => {
-        if (e.target === fullscreenGallery) closeFullscreen();
-    });
-
-    // Keyboard navigation
+    
     document.addEventListener('keydown', (e) => {
-        if (fullscreenGallery.style.display === 'flex') {
-            if (e.key === 'ArrowLeft') {
-                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-                displayImage(currentImageIndex);
-            } else if (e.key === 'ArrowRight') {
-                currentImageIndex = (currentImageIndex + 1) % images.length;
-                displayImage(currentImageIndex);
-            } else if (e.key === 'Escape') {
-                closeFullscreen();
-            }
+        if (!modal.classList.contains('active')) return;
+        if (e.key === 'Escape') {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        } else if (e.key === 'ArrowLeft') {
+            prevBtn.click();
+        } else if (e.key === 'ArrowRight') {
+            nextBtn.click();
         }
     });
+}
 
-    function closeFullscreen() {
-        fullscreenGallery.style.display = 'none';
-        document.body.style.overflow = 'auto';
+// ==========================================
+// BLESSINGS SYSTEM
+// ==========================================
+let blessings = [];
+
+function loadBlessings() {
+    const stored = localStorage.getItem('housewarmingBlessings');
+    if (stored) {
+        blessings = JSON.parse(stored);
     }
+    renderBlessings();
 }
 
-// ==========================================
-// DIGITAL BLESSINGS (SIMPLIFIED)
-// ==========================================
-
-function setupBlessingsForm() {
-    const form = document.getElementById('blessingsForm');
-    const successMessage = document.getElementById('successMessage');
-    const closeSuccessBtn = document.getElementById('closeSuccess');
-    const blessingsList = document.getElementById('blessingsList');
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const blessing = {
-            name: document.getElementById('guestName').value,
-            message: document.getElementById('blessingMessage').value,
-            timestamp: new Date().toLocaleString()
-        };
-
-        // Save to localStorage
-        saveBlessingToStorage(blessing);
-
-        // Display success message
-        successMessage.style.display = 'block';
-        form.style.display = 'none';
-
-        // Reset form
-        form.reset();
-
-        // Refresh blessings display
-        displayBlessings();
-    });
-
-    closeSuccessBtn.addEventListener('click', () => {
-        successMessage.style.display = 'none';
-        form.style.display = 'flex';
-    });
-
-    // Initial display
-    displayBlessings();
+function saveBlessings() {
+    localStorage.setItem('housewarmingBlessings', JSON.stringify(blessings));
 }
 
-function saveBlessingToStorage(blessing) {
-    let blessings = JSON.parse(localStorage.getItem('blessings') || '[]');
-    blessings.push(blessing);
-    localStorage.setItem('blessings', JSON.stringify(blessings));
-}
-
-function displayBlessings() {
-    const blessings = JSON.parse(localStorage.getItem('blessings') || '[]');
-    const blessingsList = document.getElementById('blessingsList');
-    blessingsList.innerHTML = '';
-
-    // Show latest 5 blessings
-    const recentBlessings = blessings.slice(-5).reverse();
-
-    if (recentBlessings.length === 0) {
-        blessingsList.innerHTML = '<p style="text-align: center; color: var(--light-text); padding: var(--spacing-lg);">No blessings yet. Be the first to share!</p>';
+function renderBlessings() {
+    const container = document.getElementById('blessingsList');
+    const countSpan = document.getElementById('blessingCount');
+    
+    if (countSpan) {
+        countSpan.textContent = blessings.length;
+    }
+    
+    if (!container) return;
+    
+    if (blessings.length === 0) {
+        container.innerHTML = '<div class="blessing-placeholder">✨ No blessings yet. Be the first to share your love! ✨</div>';
         return;
     }
+    
+    const recent = [...blessings].reverse().slice(0, 10);
+    container.innerHTML = recent.map(b => `
+        <div class="blessing-card">
+            <div class="blessing-name">🙏 ${escapeHtml(b.name)}</div>
+            <div class="blessing-message">"${escapeHtml(b.message)}"</div>
+        </div>
+    `).join('');
+}
 
-    recentBlessings.forEach(blessing => {
-        const card = document.createElement('div');
-        card.className = 'blessing-card';
-        card.innerHTML = `
-            <div class="name">${escapeHtml(blessing.name)}</div>
-            <div class="message">"${escapeHtml(blessing.message)}"</div>
-        `;
-        blessingsList.appendChild(card);
+function addBlessing(name, message) {
+    if (!name.trim() || !message.trim()) return false;
+    
+    blessings.push({
+        name: name.trim(),
+        message: message.trim(),
+        timestamp: Date.now()
+    });
+    
+    saveBlessings();
+    renderBlessings();
+    return true;
+}
+
+function initBlessingsForm() {
+    const form = document.getElementById('blessingForm');
+    const feedback = document.getElementById('formFeedback');
+    
+    if (!form) return;
+    
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('guestName').value;
+        const message = document.getElementById('blessingMsg').value;
+        
+        if (!name || !message) {
+            if (feedback) {
+                feedback.innerHTML = '<div style="color: #ffaa77;">✨ Please enter both name and blessing ✨</div>';
+                setTimeout(() => { feedback.innerHTML = ''; }, 3000);
+            }
+            return;
+        }
+        
+        if (addBlessing(name, message)) {
+            if (feedback) {
+                feedback.innerHTML = '<div style="color: #88ff88;">💖 Thank you! Your blessing has been received with gratitude 💖</div>';
+                setTimeout(() => { feedback.innerHTML = ''; }, 4000);
+            }
+            form.reset();
+        } else {
+            if (feedback) {
+                feedback.innerHTML = '<div style="color: #ffaa77;">Something went wrong. Please try again.</div>';
+            }
+        }
     });
 }
 
-function updateLocationDisplay() {
-    const addressDisplay = document.getElementById('addressDisplay');
-    if (addressDisplay) {
-        addressDisplay.textContent = CONFIG.houseAddress;
+// ==========================================
+// TRAVEL ASSISTANT
+// ==========================================
+function openTravelAssistant() {
+    const statusDiv = document.getElementById('locationStatus');
+    const etaPreview = document.getElementById('distancePreview');
+    
+    if (!navigator.geolocation) {
+        if (statusDiv) statusDiv.textContent = '⚠️ Geolocation not supported. Opening maps...';
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${CONFIG.houseLat},${CONFIG.houseLng}&travelmode=driving`, '_blank');
+        return;
     }
+    
+    if (statusDiv) statusDiv.textContent = '🔍 Locating you...';
+    
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+            const distance = calculateDistance(userLat, userLng, CONFIG.houseLat, CONFIG.houseLng);
+            const eta = calculateETA(distance, CONFIG.averageSpeed);
+            
+            if (etaPreview) {
+                etaPreview.innerHTML = `📍 Distance: ${formatDistance(distance)} | ⏱️ ETA: ~${eta} minutes by car`;
+                etaPreview.style.opacity = '1';
+            }
+            
+            if (statusDiv) {
+                statusDiv.textContent = '✓ Location found! Opening Google Maps...';
+                statusDiv.style.color = '#88ff88';
+            }
+            
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${CONFIG.houseLat},${CONFIG.houseLng}&travelmode=driving`;
+            
+            setTimeout(() => {
+                window.open(mapsUrl, '_blank');
+            }, 1000);
+            
+            setTimeout(() => {
+                if (statusDiv) statusDiv.textContent = '';
+            }, 5000);
+        },
+        (error) => {
+            let errorMsg = '⚠️ Could not get your location. ';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMsg += 'Please allow location access.';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMsg += 'Location unavailable.';
+                    break;
+                default:
+                    errorMsg += 'Opening maps without location.';
+            }
+            if (statusDiv) {
+                statusDiv.textContent = errorMsg;
+                setTimeout(() => { statusDiv.textContent = ''; }, 4000);
+            }
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${CONFIG.houseLat},${CONFIG.houseLng}&travelmode=driving`, '_blank');
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
+}
+
+// ==========================================
+// NAVBAR SCROLL & MOBILE MENU
+// ==========================================
+function initNavbar() {
+    const navbar = document.querySelector('.navbar');
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+    
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+    }
+    
+    // Close menu on link click
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu?.classList.remove('active');
+        });
+    });
 }
 
 // ==========================================
 // SCROLL ANIMATIONS
 // ==========================================
-
-function setupScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observerCallback = (entries) => {
+function initScrollAnimations() {
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Animate gallery items
-                if (entry.target.classList.contains('gallery-section')) {
-                    const items = entry.target.querySelectorAll('.gallery-item');
-                    items.forEach((item, index) => {
-                        if (!item.classList.contains('animated')) {
-                            item.style.animationDelay = `${index * 0.1}s`;
-                            item.classList.add('animated');
-                        }
-                    });
-                }
-                
-                // Add subtle fade-in to sections
-                if (!entry.target.dataset.animated) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    entry.target.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                    entry.target.dataset.animated = 'true';
-                }
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
             }
         });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    // Observe all sections
-    document.querySelectorAll('section').forEach(section => {
+    }, { threshold: 0.1 });
+    
+    sections.forEach(section => {
         section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
+        section.style.transform = 'translateY(30px)';
+        section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
         observer.observe(section);
     });
 }
 
 // ==========================================
-// PERFORMANCE & ACCESSIBILITY
+// BUTTON NAVIGATION
 // ==========================================
-
-// Check for prefers-reduced-motion
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    // Disable all animations
-    document.documentElement.style.setProperty('--transition', 'none');
-    document.documentElement.style.setProperty('--transition-slow', 'none');
+function initButtons() {
+    const directionsBtn = document.getElementById('directionsBtn');
+    const travelBtn = document.getElementById('travelBtn');
+    const galleryNavBtn = document.getElementById('galleryNavBtn');
+    
+    if (directionsBtn) directionsBtn.addEventListener('click', openTravelAssistant);
+    if (travelBtn) travelBtn.addEventListener('click', openTravelAssistant);
+    
+    if (galleryNavBtn) {
+        galleryNavBtn.addEventListener('click', () => {
+            document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
 }
 
-// Service Worker for offline support (optional)
-if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
-    navigator.serviceWorker.register('sw.js').catch(() => {
-        // Service worker not available
-    });
-}
+// ==========================================
+// INITIALIZATION
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    initLoader();
+    
+    // Particle system
+    const canvas = document.getElementById('particleCanvas');
+    if (canvas) {
+        new ParticleSystem(canvas);
+    }
+    
+    initGallery();
+    initGalleryModal();
+    loadBlessings();
+    initBlessingsForm();
+    initNavbar();
+    initScrollAnimations();
+    initButtons();
+    
+    console.log('✨ Gruhapravesh Website Loaded ✨');
+});

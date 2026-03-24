@@ -2,196 +2,215 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Housewarming Ceremony - 12 March - Welcome & Directions">
-    <title>Welcome to Our New Home | Housewarming 12 March</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Gruhapravesh - Celestial Housewarming Ceremony">
+    <title>Gruhapravesh | Celestial Housewarming Ceremony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Loader Screen (First) -->
-    <div id="loader" class="loader-screen">
-        <div class="loader-content">
-            <h2 class="loader-title">Welcome</h2>
-            <p class="loader-text">Preparing directions…</p>
-            <div class="loader-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+
+    <!-- Premium Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-ring"></div>
+        <div class="loader-lotus">🪷</div>
+        <p class="loader-text">Blessings are loading...</p>
     </div>
 
-    <!-- Main Content (Hidden until loader completes) -->
-    <div id="main-content" class="main-content" style="display: none;">
-        <!-- Navigation Bar -->
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="nav-logo">🏠 Housewarming</div>
-                <div class="nav-menu">
-                    <a href="#welcome" class="nav-link">Welcome</a>
-                    <a href="#gallery" class="nav-link">Gallery</a>
-                    <a href="#blessings" class="nav-link">Blessings</a>
-                    <a href="#location" class="nav-link">Location</a>
-                </div>
+    <!-- Background Image Layer -->
+    <div class="bg-image-layer"></div>
+    
+    <!-- Animated Particle Canvas -->
+    <canvas id="particleCanvas" class="particle-canvas"></canvas>
+    
+    <!-- Floating Orbs -->
+    <div class="floating-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🏠</span>
+                <span>Gruhapravesh</span>
             </div>
-        </nav>
-
-        <!-- Welcome Section -->
-        <section id="welcome" class="welcome-section">
-            <div class="welcome-container">
-                <div class="welcome-content">
-                    <h1 class="welcome-title animate-fade-in">WELCOME TO OUR NEW HOME</h1>
-                    <p class="welcome-date animate-slide-up">12 MARCH 2025</p>
-                    <p class="welcome-message animate-slide-up">
-                        Thank you for joining us as we celebrate this special milestone and bless our new home with your love and prayers.
-                    </p>
-                    
-                    <!-- Main Navigation Button -->
-                    <div class="welcome-actions">
-                        <button class="btn btn-primary animate-stagger-1" id="guideBtn">
-                            🧭 Get Directions to Our Home
-                        </button>
-                    </div>
-
-                    <!-- Status Indicator -->
-                    <div id="locationStatus" class="location-status"></div>
-                </div>
-
-                <div class="welcome-animation">
-                    <div class="diya-animation">
-                        <div class="flame"></div>
-                    </div>
-                </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Welcome</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
+                <a href="#blessings" class="nav-link">Blessings</a>
+                <a href="#location" class="nav-link">Location</a>
             </div>
-        </section>
-
-        <!-- Photo Gallery Section -->
-        <section id="gallery" class="gallery-section">
-            <div class="section-container">
-                <h2 class="section-title">Our Home Gallery</h2>
-                <p class="section-subtitle">Explore our new space</p>
-                
-                <div class="gallery-grid">
-                    <div class="gallery-item">
-                        <img src="assets/images/home1.jpg" alt="Home exterior" data-fullscreen="assets/images/home1.jpg">
-                        <div class="gallery-overlay">
-                            <span>Exterior</span>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="assets/images/home2.jpg" alt="Living room" data-fullscreen="assets/images/home2.jpg">
-                        <div class="gallery-overlay">
-                            <span>Living Room</span>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="assets/images/home3.jpg" alt="Kitchen" data-fullscreen="assets/images/home3.jpg">
-                        <div class="gallery-overlay">
-                            <span>Kitchen</span>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="assets/images/home4.jpg" alt="Bedroom" data-fullscreen="assets/images/home4.jpg">
-                        <div class="gallery-overlay">
-                            <span>Bedroom</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Digital Blessings Section -->
-        <section id="blessings" class="blessings-section">
-            <div class="section-container">
-                <h2 class="section-title">Share Your Blessings</h2>
-                <p class="section-subtitle">Send us your warm wishes</p>
-                
-                <div class="blessings-content">
-                    <form id="blessingsForm" class="blessings-form">
-                        <div class="form-group">
-                            <label for="guestName">Your Name</label>
-                            <input type="text" id="guestName" name="guestName" placeholder="Enter your name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="blessingMessage">Your Blessing Message</label>
-                            <textarea id="blessingMessage" name="blessingMessage" placeholder="Share your warm wishes and blessings..." rows="5" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">💌 Submit Blessing</button>
-                    </form>
-                    
-                    <div id="successMessage" class="success-message" style="display: none;">
-                        <div class="success-content">
-                            <h3>✨ Thank You!</h3>
-                            <p>Your blessing has been received with gratitude.</p>
-                            <button class="btn btn-secondary" id="closeSuccess">Close</button>
-                        </div>
-                    </div>
-
-                    <div class="blessings-list">
-                        <h3>Recent Blessings</h3>
-                        <div id="blessingsList" class="blessings-display"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Location & Route Section -->
-        <section id="location" class="location-section">
-            <div class="section-container">
-                <h2 class="section-title">Find Us</h2>
-                <p class="section-subtitle">Easy directions to our new home</p>
-                
-                <div class="location-content">
-                    <div class="location-info">
-                        <div class="info-card">
-                            <h3>📍 Our Address</h3>
-                            <p id="addressDisplay">123 New Home Street, Beautiful City</p>
-                        </div>
-                        
-                        <div class="info-card">
-                            <h3>🗓️ Celebration Date</h3>
-                            <p>12 March 2025<br><span class="time-info">Timings: 11:00 AM onwards</span></p>
-                        </div>
-                        
-                        <div class="info-card">
-                            <h3>🧭 Need Help?</h3>
-                            <p>
-                                <button class="btn btn-secondary" id="travelAssistantBtn">🧭 Travel Assistant</button>
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Main Route Button -->
-                    <div class="route-section">
-                        <button class="btn btn-primary btn-large" id="routeBtn">
-                            🧭 Get Directions to Our Home
-                        </button>
-                        <div id="distanceETA" class="distance-eta-display"></div>
-                        <p class="route-help">Click to open Google Maps with turn-by-turn navigation from your current location</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Fullscreen Gallery View -->
-        <div id="fullscreenGallery" class="fullscreen-gallery" style="display: none;">
-            <span class="close-fullscreen">&times;</span>
-            <img id="fullscreenImage" src="" alt="Fullscreen view">
-            <div class="gallery-nav">
-                <button id="prevImage" class="nav-arrow">❮</button>
-                <button id="nextImage" class="nav-arrow">❯</button>
+            <div class="nav-toggle" id="navToggle">
+                <span></span><span></span><span></span>
             </div>
         </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-bg-glow"></div>
+            <div class="hero-container">
+                <div class="hero-badge">✨ Sacred Invitation ✨</div>
+                <h1 class="hero-title">
+                    <span class="title-line">Housewarming</span>
+                    <span class="title-line-glow">Ceremony</span>
+                </h1>
+                <p class="hero-subtitle">With joy and gratitude, we invite you to bless our new home</p>
+                
+                <div class="hero-details">
+                    <div class="detail-card">
+                        <span class="detail-icon">📅</span>
+                        <span>Monday, 20 April 2026</span>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon">📍</span>
+                        <span>Kanthmoole Madatharu House,Vittal</span>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon">🕊️</span>
+                        <span>11:00 AM onwards | Blessings & Feast</span>
+                    </div>
+                </div>
+
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="directionsBtn">
+                        <span class="btn-icon">🧭</span>
+                        Get Directions
+                        <span class="btn-glow"></span>
+                    </button>
+                    <button class="btn btn-secondary" id="galleryNavBtn">
+                        <span class="btn-icon">🎆</span>
+                        View Gallery
+                        <span class="btn-glow"></span>
+                    </button>
+                </div>
+
+                <div id="locationStatus" class="location-status"></div>
+                <div id="distancePreview" class="distance-preview"></div>
+            </div>
+            
+            <!-- Floating Diya (Lamp) Animation -->
+            <div class="floating-diya">
+                <div class="diya-body"></div>
+                <div class="diya-flame"></div>
+                <div class="diya-glow"></div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Our Sacred Space</span>
+                    <h2 class="section-title">Home Gallery</h2>
+                    <p class="section-subtitle">Glimpses of love, light, and new beginnings</p>
+                </div>
+                
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Gallery items will be populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Blessings Section -->
+        <section id="blessings" class="blessings">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Share Your Heart</span>
+                    <h2 class="section-title">Digital Blessings</h2>
+                    <p class="section-subtitle">Your warm wishes make our home truly special</p>
+                </div>
+                
+                <div class="blessings-wrapper">
+                    <div class="blessings-form-card">
+                        <form id="blessingForm" class="blessing-form">
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" id="guestName" placeholder="Enter your name" required>
+                                <div class="input-focus-effect"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Your Blessing</label>
+                                <textarea id="blessingMsg" rows="4" placeholder="Share your heartfelt wishes..."></textarea>
+                                <div class="input-focus-effect"></div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">
+                                <span class="btn-icon">💫</span>
+                                Submit Blessing
+                            </button>
+                        </form>
+                        <div id="formFeedback" class="form-feedback"></div>
+                    </div>
+                    
+                    <div class="blessings-list-card">
+                        <h3>Recent Blessings <span class="blessing-count" id="blessingCount">0</span></h3>
+                        <div id="blessingsList" class="blessings-list">
+                            <div class="blessing-placeholder">✨ No blessings yet. Be the first! ✨</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location Section -->
+        <section id="location" class="location">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Find Your Way</span>
+                    <h2 class="section-title">Reach Our Home</h2>
+                    <p class="section-subtitle">We can't wait to welcome you</p>
+                </div>
+                
+                <div class="location-grid">
+                    <div class="location-card">
+                        <div class="location-icon">🏠</div>
+                        <h3>Venue Address</h3>
+                        <p>1Kanthmoole Madatharu House,Vittal</p>
+                        <div class="timing-badge">🕊️ 11:00 AM - 8:00 PM</div>
+                    </div>
+                    
+                    <div class="location-card">
+                        <div class="location-icon">🗺️</div>
+                        <h3>Travel Assistant</h3>
+                        <div id="etaDisplay" class="eta-display">
+                            <div class="eta-placeholder">Click below to see distance & travel time</div>
+                        </div>
+                        <button class="btn btn-primary btn-large" id="travelBtn">
+                            <span class="btn-icon">🧭</span>
+                            Get Turn-by-Turn Directions
+                        </button>
+                        <p class="location-note">Opens Google Maps with live navigation</p>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </section>
 
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
-                <p>&copy; 2025 Housewarming Ceremony. Built with ❤️</p>
-                <p class="footer-note">Made with care for family & friends</p>
+                <div class="footer-logo">🪷 Gruhapravesh 2025</div>
+                <p>With gratitude to our loved ones who make this journey special</p>
+                <div class="footer-divider"></div>
+                <p class="footer-copyright">© 2025 | Built with ❤️ for family & friends</p>
             </div>
         </footer>
+    </main>
+
+    <!-- Fullscreen Gallery Modal -->
+    <div id="galleryModal" class="gallery-modal">
+        <button class="modal-close">&times;</button>
+        <button class="modal-prev">❮</button>
+        <button class="modal-next">❯</button>
+        <img class="modal-image" id="modalImage" alt="Gallery fullscreen">
     </div>
 
     <script src="js/script.js"></script>
